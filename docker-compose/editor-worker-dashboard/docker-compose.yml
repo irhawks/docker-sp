@@ -1,4 +1,4 @@
-version: '2.3'
+version: '2.0'
 services:
   mysql:
     image: mysql:5.7.19
@@ -9,50 +9,28 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./mysql/scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-uroot", "-pwso2carbon"]
-      interval: 30s
-      timeout: 60s
-      retries: 5
   editor:
-    image: docker.wso2.com/wso2sp-editor:4.0.0
+    image: wso2sp-editor:4.0.0
     container_name: wso2sp-editor
     ports:
       - "9390:9390"
-    healthcheck:
-      test: ["CMD", "nc", "-z","localhost", "9090"]
-      interval: 10s
-      timeout: 120s
-      retries: 5
   worker:
-    image: docker.wso2.com/wso2sp-worker:4.0.0
+    image: wso2sp-worker:4.0.0
     container_name: wso2sp-worker
     ports:
       - "9090:9090"
-    healthcheck:
-      test: ["CMD", "nc", "-z","localhost", "9090"]
-      interval: 10s
-      timeout: 120s
-      retries: 5
     volumes:
        - ./worker/conf/deployment.yaml:/home/wso2carbon/wso2sp-4.0.0/conf/worker/deployment.yaml
     depends_on:
-          mysql:
-            condition: service_healthy
+      - mysql
     links:
       - mysql
   dashboard:
-    image: docker.wso2.com/wso2sp-dashboard:4.0.0
+    image: wso2sp-dashboard:4.0.0
     container_name: wso2sp-dashboard
     ports:
       - "9643:9643"
-    healthcheck:
-      test: ["CMD", "nc", "-z","localhost", "9643"]
-      interval: 10s
-      timeout: 120s
-      retries: 5
     depends_on:
-      worker:
-        condition: service_healthy
+      - worker
     volumes:
       - ./dashboard/conf/deployment.yaml:/home/wso2carbon/wso2sp-4.0.0/conf/dashboard/deployment.yaml

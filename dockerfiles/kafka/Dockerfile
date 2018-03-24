@@ -33,7 +33,7 @@ ARG JDK=jdk1.8.0*
 ARG JAVA_HOME=${USER_HOME}/java
 
 # set product configurations
-ARG DISTRO_NAME=kafka_2.11-0.10.0.0
+ARG DISTRO_NAME=kafka_2.11-0.10.2.1
 ARG KAFKA_HOME=${USER_HOME}/${DISTRO_NAME}
 
 RUN apt-get update && \
