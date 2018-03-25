@@ -14,6 +14,9 @@ services:
     container_name: wso2sp-editor
     ports:
       - "9390:9390"
+      - "9743:9743"
+    volumes:
+       - ./editor/conf/deployment.yaml:/home/wso2carbon/wso2sp-4.0.0/conf/editor/deployment.yaml
   worker:
     image: wso2sp-worker:4.0.0
     container_name: wso2sp-worker
